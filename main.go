@@ -11,14 +11,14 @@ import (
 
 func main() {
 	main_url := "https://www.moneycontrol.com/"
-	keyword := "lockdown"
+	keyword := "Gayatri"
 	
-	homepage := page_request(main_url)
+	homepage := page_request(&main_url)
 
 	re := regexp.MustCompile(`\s*(?i)https://www[.]moneycontrol[.]com(\"([^"]*\")|'[^']*'|([^'">\s]+))`)
 	links_to_visit := re.FindAllString(homepage, -1)
 	filtered_links := removeDuplicatesUnordered(links_to_visit)
-	fmt.Println(visit_links(keyword, filtered_links))
+	fmt.Println(visit_links(&keyword, filtered_links))
 }
 
 func removeDuplicatesUnordered(elements []string) []string {
@@ -37,8 +37,8 @@ func removeDuplicatesUnordered(elements []string) []string {
     return result
 }
 
-func page_request(url string) string {
-	resp, err := http.Get(url)
+func page_request(url *string) string {
+	resp, err := http.Get(*url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,17 +50,20 @@ func page_request(url string) string {
 	return string(body)
 }
 
-func visit_links(keyword string,links []string) int {
+func visit_links(keyword *string,links []string) int {
 	var sum int
 	for _, l := range links {
-		count := find_keyword(keyword, page_request(l))
+		count := find_keyword(keyword, page_request(&l))
 		sum = sum + count
 	}
 	return sum
 }
 
-func find_keyword(keyword string, source string) int {
-	re := regexp.MustCompile(``+keyword)
+func find_keyword(keyword *string, source string) int {
+	re := regexp.MustCompile(*keyword)
 	match := re.FindAllString(source, -1)
+	if match != nil {
+		fmt.Println(keyword, match)
+	}
 	return len(match)
 }
