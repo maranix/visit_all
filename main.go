@@ -11,7 +11,7 @@ import (
 
 func main() {
 	main_url := "https://www.moneycontrol.com/"
-	keyword := "Gayatri"
+	keyword := "Indigo"
 	
 	homepage := page_request(&main_url)
 
@@ -53,17 +53,17 @@ func page_request(url *string) string {
 func visit_links(keyword *string,links []string) int {
 	var sum int
 	for _, l := range links {
-		count := find_keyword(keyword, page_request(&l))
+		count := find_keyword(keyword, page_request(&l), l)
 		sum = sum + count
 	}
 	return sum
 }
 
-func find_keyword(keyword *string, source string) int {
+func find_keyword(keyword *string, source string, link string) int {
 	re := regexp.MustCompile(*keyword)
 	match := re.FindAllString(source, -1)
 	if match != nil {
-		fmt.Println(keyword, match)
+		fmt.Println(link, len(match))
 	}
 	return len(match)
 }
