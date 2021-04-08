@@ -1,6 +1,6 @@
 package main
 
-import source "github.com/ramanverma2k/visit_all/source"
+import "github.com/ramanverma2k/visit_all/source"
 
 var url_map = map[string]string{
 	"moneycontrol": "https://www.moneycontrol.com/",
@@ -12,11 +12,11 @@ var url_map = map[string]string{
 
 func main() {
 	keyword := "Corona"
-	
-	for k, v := range url_map {
-		if(k=="moneycontrol"){
-			source.MoneyControl(v, keyword)
-		}
-	}
+	source.Investing("https://in.investing.com", keyword)
+	// for k, v := range url_map {
+	// 	if(k=="moneycontrol"){
+	// 		source.MoneyControl(v, keyword)
+	// 	}
+	// }
 
 }

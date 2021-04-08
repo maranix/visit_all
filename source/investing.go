@@ -2,26 +2,19 @@ package source
 
 import (
 	"fmt"
-	"regexp"
-	"strings"
 
 	"github.com/ramanverma2k/visit_all/process"
 )
 
-func Investing(url string, keyword *string) {
-	homepage := process.PageRequest(&url)
-	re := regexp.MustCompile(`[^a-z]"/[[:alpha:]].*?"`)
-	sub_urls := re.FindAllString(homepage, -1)
-	for i, u := range sub_urls {
-		sub_urls[i] = strings.Trim(u, "=\"")
-	}
-	filtered_links := process.RemoveDuplicatesUnordered(sub_urls)
+func Investing(url string, keyword string) {
 	
-	for i, v := range filtered_links {
-		filtered_links[i] = "https://in.investing.com"+v
-	}
+	links := process.RegEx(url)
+	// fmt.Println(process.VisitLinks(&keyword, links))
+	// sub_links := process.SubLinks(links)
 
-	fmt.Println(process.VisitLinks(keyword, filtered_links))
+	fmt.Println(len(links))
+
+	// fmt.Println(process.VisitLinks(keyword, filtered_links))
 	// file, err := os.OpenFile("links.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 	// if err != nil {
 	// 	log.Fatal(err)
