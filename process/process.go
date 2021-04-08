@@ -37,6 +37,15 @@ func PageRequest(url *string) string {
 	return string(body)
 }
 
+func RegEx(url string) []string {
+	homepage := PageRequest(&url)
+	// re := regexp.MustCompile(`\s*(?i)https://www[.]moneycontrol[.]com(\"([^"]*\")|'[^']*'|([^'">\s]+))`)
+	re := regexp.MustCompile(`[^a-z]"/[[:alpha:]].*?"`)
+	links_to_visit := re.FindAllString(homepage, -1)
+	filtered_links := RemoveDuplicatesUnordered(links_to_visit)
+	return filtered_links
+}
+
 func VisitLinks(keyword *string,links []string) int {
 	var sum int
 	for _, l := range links {
