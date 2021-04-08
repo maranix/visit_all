@@ -8,5 +8,8 @@ import (
 
 func MoneyControl(url string, keyword string) {
 	links := process.RegEx(url)
-	fmt.Println(process.VisitLinks(&keyword, links))
+	sub_links := process.SubLinks(links)
+	fmt.Println(len(links))
+	fmt.Println(len(sub_links))
+	// fmt.Println(process.VisitLinks(&keyword, links))
 }
