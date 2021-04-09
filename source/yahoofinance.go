@@ -9,8 +9,8 @@ import (
 func YahooFinance(url string, keyword string) {
 	links := process.RegEx(url)
 	sub_links := process.SubLinks(links)
-	fmt.Println(len(sub_links))
-	for _, l := range sub_links {
-		fmt.Println(l)
-	}
+	fmt.Println("YahooFinance: ")
+	fmt.Println("Parent links: ", len(links))
+	fmt.Println("SubLinks: ", len(sub_links))
+	fmt.Println(process.VisitLinks(&keyword, sub_links))
 }
