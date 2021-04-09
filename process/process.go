@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func RemoveDuplicatesUnordered(url string, elements []string) []string {
+func RemoveDuplicatesUnordered(elements []string, url ...string) []string {
     encountered := map[string]bool{}
 
     // Create a map of all unique elements.
@@ -20,7 +20,11 @@ func RemoveDuplicatesUnordered(url string, elements []string) []string {
     // Place all keys from the map into a slice.
     result := []string{}
     for key, _ := range encountered {
-        result = append(result, url+strings.Trim(key, "=\""))
+        if (url != nil) {
+			result = append(result, url[0]+strings.Trim(key, "=\""))
+		} else {
+			result = append(result, strings.Trim(key, "=\""))
+		}
     }
     return result
 }
@@ -38,13 +42,22 @@ func PageRequest(url *string) string {
 	return string(body)
 }
 
-func RegEx(url string) []string {
+func RegEx(url string, expression ...string) []string {
+	var re *regexp.Regexp
+	var filtered_links []string
 	homepage := PageRequest(&url)
-	// re := regexp.MustCompile(`\s*(?i)https://www[.]moneycontrol[.]com(\"([^"]*\")|'[^']*'|([^'">\s]+))`)
-	// re := regexp.MustCompile(`\s*(?i)https://www[.]cnbctv18[.]com(\"([^"]*\")|'[^']*'|([^'">\s]+))`)
-	re := regexp.MustCompile(`[^a-z]"/[[:alpha:]].*?"`)
-	links_to_visit := re.FindAllString(homepage, -1)
-	filtered_links := RemoveDuplicatesUnordered(url, links_to_visit)
+
+	if (expression != nil) {
+		re = regexp.MustCompile(expression[0])
+		links_to_visit := re.FindAllString(homepage, -1)
+		filtered_links = RemoveDuplicatesUnordered(links_to_visit)
+	} else {
+		re = regexp.MustCompile(`[^a-z]"/[[:alpha:]].*?"`)
+		links_to_visit := re.FindAllString(homepage, -1)
+		filtered_links = RemoveDuplicatesUnordered(links_to_visit, url)
+	}
+	
+	
 	return filtered_links
 }
 

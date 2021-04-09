@@ -1,18 +1,18 @@
 package main
 
-var url_map = map[string]string{
-	"moneycontrol": "https://www.moneycontrol.com",
-	"investing": "https://in.investing.com",
-	"yahoo": "https://in.finance.yahoo.com",
-	"indiatimes": "https://economictimes.indiatimes.com",
-	"cnbctv18": "https://www.cnbctv18.com",
-}
+import "github.com/ramanverma2k/visit_all/source"
+
+/*
+*
+* TODO: Introduce Channels and routines
+*
+ */
 
 func main() {
-	// keyword := "Corona"
-	// source.EconomicTimes("https://economictimes.indiatimes.com", keyword)
-	// source.CNBC("https://www.cnbctv18.com", keyword)
-	// source.MoneyControl("https://www.moneycontrol.com", keyword)
-	// source.YahooFinance("https://in.finance.yahoo.com", keyword)
-	// source.Investing("https://in.investing.com", keyword)
+	keyword := "Corona"
+	source.EconomicTimes("https://economictimes.indiatimes.com", keyword)
+	// source.CNBC("https://www.cnbctv18.com", keyword, `\s*(?i)https://www[.]cnbctv18[.]com(\"([^"]*\")|'[^']*'|([^'">\s]+))`)
+	source.MoneyControl("https://www.moneycontrol.com", keyword, `\s*(?i)https://www[.]moneycontrol[.]com(\"([^"]*\")|'[^']*'|([^'">\s]+))`)
+	source.YahooFinance("https://in.finance.yahoo.com", keyword)
+	source.Investing("https://in.investing.com", keyword)
 }
