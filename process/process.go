@@ -81,6 +81,7 @@ func VisitLinks(keyword *string,links []string) int {
 }
 
 func FindKeyword(keyword *string, source string, link string) int {
+	// <(?:h1|p).*?>(.*)</(?:h1|p)>
 	re := regexp.MustCompile(*keyword)
 	match := re.FindAllString(source, -1)
 	if match != nil {
