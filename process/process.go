@@ -39,7 +39,7 @@ func PageRequest(url *string) string {
 	return string(body)
 }
 
-func RegEx(url string, expression ...string) []string {
+func RegEx(url string, ch chan []string, expression ...string,) {
 	var re *regexp.Regexp
 	var links_to_visit []string
 	homepage := PageRequest(&url)
@@ -52,22 +52,33 @@ func RegEx(url string, expression ...string) []string {
 		links_to_visit = re.FindAllString(homepage, -1)
 	}
 	filtered_links := RemoveDuplicatesUnordered(links_to_visit, url)
-	return filtered_links
+	ch <- filtered_links
 }
 
 func SubLinks(s []string, url string) []string {
+	var channel = make(chan []string)
 	var filtered_links []string
+
+	/*
+		1st iteration after fetching links from homepage.
+		Sublinks of all links fetched from homepage.
+	*/
+
 	s_tmp := s
 	fmt.Println("Before: ", len(s))
 	for _, l := range s_tmp {
-		temp := RegEx(l)
-		s = append(s, temp...)
+		go RegEx(l, channel)
+		s = append(s, <-channel...)
 	}
-	
+
+	/*
+		2nd iteration after fetching links from 1st iteration.
+		Sublinks of all links fetched from 1st iteration.
+	*/
 	s_tmp = s
 	for _, l := range s_tmp {
-		temp := RegEx(l)
-		s = append(s, temp...)
+		go RegEx(l, channel)
+		s = append(s, <-channel...)
 	}
 	fmt.Println("s_tmp: ",len(s_tmp))
 	fmt.Println("s: ",len(s))
